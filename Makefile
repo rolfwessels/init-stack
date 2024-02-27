@@ -33,7 +33,7 @@ ifeq ($(current-branch), main)
 	docker-tags := -t $(dockerhub):alpha -t $(dockerhub):latest -t $(dockerhub):v$(version) -t $(dockerhub):$(git-short-hash)
 	version-full := $(version)
 else
-	version := $(versionPrefix).$(shell git rev-list remotes/origin/master --count).$(shell git rev-list remotes/origin/master..HEAD --count)
+	version := $(versionPrefix).$(shell git rev-list origin/master --count).$(shell git rev-list origin/master..HEAD --count)
 	version-suffix := alpha
 	version-full := $(version)-$(version-suffix)
 	docker-tags := -t $(dockerhub):$(version-suffix) -t $(dockerhub):$(git-short-hash) -t $(dockerhub):v$(version-full)
