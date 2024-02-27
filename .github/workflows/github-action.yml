@@ -51,11 +51,11 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: init-stack-linux-x64
-          path: ./release/linux-x64/
+          path: ./dist/release/linux-x64/
       - uses: actions/upload-artifact@v4
         with:
             name: init-stack-win-x64
-            path: ./release/win-x64/
+            path: ./dist/release/win-x64/
   publish-prod:
     if: contains(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
