@@ -8,7 +8,33 @@
 
 # 🌐 Init stack
 
-This makes init stack happen
+Streamline Your Project Setup with Smart Templating. Init-Stack automates the initial setup of new software projects by cloning your chosen GitHub repository template, then intelligently renaming files and replacing identifiers within the source code to match your new project's name.
+
+## 🔍 Using the cli
+
+Just pick a project and then a new file name
+
+```bash
+.\init-stack new 
+```
+
+If you have a folder that you would like to use as template then call.
+```cmd
+.\init-stack new c:\project\Template\MyprojectName 
+```
+
+To set the output name and folder, run the following
+```cmd
+.\init-stack new c:\project\Template\MyprojectName MyNewName -o c:\Project\
+```
+
+If you know the project name then just use the name
+```bash
+.\init-stack new template-dotnet-core-console-app NewConsoleApp -o .
+```
+
+
+
 
 ## 📦 Technology
 
@@ -18,7 +44,6 @@ This makes init stack happen
 * [FluentAssertions](https://fluentassertions.com/) for readable assertions
 * [Docker](https://www.docker.com/)  for easy deployment and setting up of developer environment
 * [MakeFile](https://opensource.com/article/18/8/what-how-makefile)  because it just works!
-
 
 
 ## 🚀 Getting started

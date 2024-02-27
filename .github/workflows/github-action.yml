@@ -25,8 +25,12 @@ jobs:
 
       - name: Test
         run: make test
-      - name: execute console to see if it runs
+      - name: Check the start Command
         run: make start
+      - name: Check the publish Command
+        run: make publish
+      - name: Test the published command
+        run: ./dist/release/linux-x64/init-stack new template-dotnet-core-console-app NewConsoleApp -o .
   publish-dev:
     needs: test
     runs-on: ubuntu-latest
@@ -42,11 +46,6 @@ jobs:
           dotnet-version: 8.0.x
       - name: Publish console apps
         run: make publish
-      - name: Build Docker image
-        run: make docker-build
-      - name: Push images to Docker Hub
-        if: github.ref == 'refs/heads/main' || startsWith(github.event.head_commit.message, 'deploy')
-        run: make #docker-login docker-push deploy env=dev
   publish-prod:
     if: contains(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest

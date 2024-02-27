@@ -12,10 +12,10 @@ public class StackBuilderTests
     // arrange
     var stackSourceFile = new StackSourceFile("TemplateDotnetCoreConsoleApp",
       "C:\\template\\dotnet-core-console-app");
-    var stackBuilder = new StackBuilder(stackSourceFile, "C:\\output", "YarYar");
+    var stackBuilder = new StackBuilder(stackSourceFile, Path.GetTempPath(), "YarYar");
     // action
     var stackBuilderOutputFolder = stackBuilder.OutputFolder;
     // assert
-    stackBuilderOutputFolder.Should().Be("C:\\output\\YarYar");
+    stackBuilderOutputFolder.Should().Be(Path.GetTempPath() + "YarYar");
   }
 }

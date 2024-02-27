@@ -118,8 +118,8 @@ publish:
 		-p:DebugType=None \
 		-p:DebugSymbols=false \
 		-p:PublishSingleFile=true \
-		-p:PublishTrimmed=true  \
-		-p:SelfContained=true \
+		-p:PublishTrimmed=false  \
+		-p:SelfContained=false \
 		-p:VersionSuffix=$(version-suffix) \
 		-p:FileVersion=$(version) \
 		-p:VersionPrefix=$(version) \
@@ -128,8 +128,8 @@ publish:
 		-p:DebugType=None \
 		-p:DebugSymbols=false \
 		-p:PublishSingleFile=true \
-		-p:PublishTrimmed=true  \
-		-p:SelfContained=true \
+		-p:PublishTrimmed=false  \
+		-p:SelfContained=false \
 		-p:VersionSuffix=$(version-suffix) \
 		-p:FileVersion=$(version) \
 		-p:VersionPrefix=$(version) \

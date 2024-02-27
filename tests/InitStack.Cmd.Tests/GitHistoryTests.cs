@@ -17,24 +17,26 @@ public class GitHistoryTests
   }
 
   [Test]
+  [Category("Integration")]
   public void GetCurrentUser_WhenCalled_ShouldReturnGitUserName()
   {
     // arrange
-    var gitHistory = new GitHistory();
-    // action
-    var value = gitHistory.GetCurrentUser();
-    // assert
-    value.Should().NotBeEmpty("");
-  }
+    var path = Path.Combine(Path.GetTempPath(), "StackInit",
+      "GitHistoryTests" + Guid.NewGuid().ToString("n").Substring(0, 4));
+    Directory.CreateDirectory(path);
+    File.WriteAllText(Path.Combine(path, "test.txt"), "test");
+    var gitHistory = new GitHistory
+    {
+      OverrideEmail = "ssamepl@asdf.com",
+      OverrideUser = "ssamepl"
+    };
+    gitHistory.GitInit(new DirectoryInfo(path));
 
-  [Test]
-  public void GetCurrentEmail_GivenRequestForUserName_ShouldReturnUserName()
-  {
-    // arrange
-    var gitHistory = new GitHistory();
     // action
-    var value = gitHistory.GetCurrentUserEmail();
+    var name = gitHistory.GetCurrentUser();
+    var email = gitHistory.GetCurrentUserEmail();
     // assert
-    value.Should().Contain("@");
+    name.Should().NotBeEmpty("ssamepl");
+    email.Should().NotBeEmpty("ssamepl@asdf.com");
   }
 }

@@ -20,7 +20,7 @@ internal class Program
 
     app.Configure(config =>
     {
-      config.SetApplicationName("TemplateDotnetCoreConsoleApp");
+      config.SetApplicationName("Init-Stack");
       config.SetExceptionHandler(e =>
       {
         Log.Logger.Error(e, e.Message);
@@ -43,7 +43,7 @@ internal class Program
       .MinimumLevel.Information()
       .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
       // .WriteTo.Console()
-      .WriteTo.RollingFile(Path.Combine(Path.GetTempPath(), "TemplateDotnetCoreConsoleApp.log"))
+      .WriteTo.RollingFile(Path.Combine(Path.GetTempPath(), "init-stack.log"))
       .CreateLogger();
   }
 }
