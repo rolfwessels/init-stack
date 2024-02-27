@@ -1,6 +1,4 @@
 [![Github release](https://img.shields.io/github/v/release/rolfwessels/init-stack)](https://github.com/rolfwessels/init-stack/releases)
-[![Dockerhub Status](https://img.shields.io/badge/dockerhub-ok-blue.svg)](https://hub.docker.com/r/rolfwessels/init-stack/tags)
-[![Dockerhub Version](https://img.shields.io/docker/v/rolfwessels/init-stack?sort=semver)](https://hub.docker.com/r/rolfwessels/init-stack/tags)
 [![GitHub](https://img.shields.io/github/license/rolfwessels/init-stack)](https://github.com/rolfwessels/init-stack/licence.md)
 
 
@@ -8,7 +6,7 @@
 
 # 🌐 Init stack
 
-Streamline Your Project Setup with Smart Templating. Init-Stack automates the initial setup of new software projects by cloning your chosen GitHub repository template, then intelligently renaming files and replacing identifiers within the source code to match your new project's name.
+Streamline your project setup with Smart Templating. Init-Stack automates the initial setup of new software projects by cloning your chosen GitHub repository template, then intelligently renaming files and replacing identifiers within the source code to match your new project's name.
 
 ## 🔍 Using the cli
 
@@ -37,17 +35,8 @@ The new project will also be adding a git init with a commit message. If you wou
 .\init-stack new template-dotnet-core-console-app NewConsoleApp -o . --git-name rolf --git-email rolf@home.com
 ```
 
-## 📦 Technology
 
-* [Serilog](https://serilog.net/) for logging and all the extensibility including plugins to push to [loki](https://grafana.com/oss/loki/)
-* [Spectre.Console](https://spectreconsole.net/) for amazing interactive console applications.
-* [NUnit](https://nunit.org/) for unit tests
-* [FluentAssertions](https://fluentassertions.com/) for readable assertions
-* [Docker](https://www.docker.com/)  for easy deployment and setting up of developer environment
-* [MakeFile](https://opensource.com/article/18/8/what-how-makefile)  because it just works!
-
-
-## 🚀 Getting started
+## 🚀 Getting started as developer
 
 This project comes with a development container will all the tooling required to build publish and deploy a project. Simply run the following commands to start development in the container.
 
