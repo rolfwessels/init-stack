@@ -8,7 +8,7 @@ using Serilog.Events;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
-namespace TemplateDotnetCoreConsoleApp.Cmd;
+namespace InitStack.Cmd;
 
 internal class Program
 {
@@ -19,7 +19,7 @@ internal class Program
     Console.OutputEncoding = Encoding.UTF8;
     app.Configure(config =>
     {
-      config.SetApplicationName("TemplateDotnetCoreConsoleApp");
+      config.SetApplicationName("InitStack");
       config.SetExceptionHandler(e =>
       {
         Log.Logger.Error(e, e.Message);
@@ -42,7 +42,7 @@ internal class Program
       .MinimumLevel.Information()
       .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
       .WriteTo.Console()
-      .WriteTo.RollingFile(Path.Combine(Path.GetTempPath(), "TemplateDotnetCoreConsoleApp.log"))
+      .WriteTo.RollingFile(Path.Combine(Path.GetTempPath(), "InitStack.log"))
       .CreateLogger();
   }
 }

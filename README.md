@@ -1,14 +1,14 @@
-[![Github release](https://img.shields.io/github/v/release/rolfwessels/template-dotnet-core-console-app)](https://github.com/rolfwessels/template-dotnet-core-console-app/releases)
-[![Dockerhub Status](https://img.shields.io/badge/dockerhub-ok-blue.svg)](https://hub.docker.com/r/rolfwessels/template-dotnet-core-console-app/tags)
-[![Dockerhub Version](https://img.shields.io/docker/v/rolfwessels/template-dotnet-core-console-app?sort=semver)](https://hub.docker.com/r/rolfwessels/template-dotnet-core-console-app/tags)
-[![GitHub](https://img.shields.io/github/license/rolfwessels/template-dotnet-core-console-app)](https://github.com/rolfwessels/template-dotnet-core-console-app/licence.md)
+[![Github release](https://img.shields.io/github/v/release/rolfwessels/init-stack)](https://github.com/rolfwessels/init-stack/releases)
+[![Dockerhub Status](https://img.shields.io/badge/dockerhub-ok-blue.svg)](https://hub.docker.com/r/rolfwessels/init-stack/tags)
+[![Dockerhub Version](https://img.shields.io/docker/v/rolfwessels/init-stack?sort=semver)](https://hub.docker.com/r/rolfwessels/init-stack/tags)
+[![GitHub](https://img.shields.io/github/license/rolfwessels/init-stack)](https://github.com/rolfwessels/init-stack/licence.md)
 
 
-![Template dotnet core console app](./docs/logo.png)
+![Init stack](./docs/logo.png)
 
-# 🌐 Template dotnet core console app
+# 🌐 Init stack
 
-This makes template dotnet core console app happen
+This makes init stack happen
 
 ## 📦 Technology
 
@@ -65,16 +65,16 @@ Before you begin, ensure you have met the following requirements:
 
 ### 🐳 Commands to run inside the container
 
-- `start` : Run the Template dotnet core console app
-- `test` : Test the Template dotnet core console app
-- `publish` : Publish the Template dotnet core console app
+- `start` : Run the Init stack
+- `test` : Test the Init stack
+- `publish` : Publish the Init stack
 - `docker-login` : Login to docker registry
 - `docker-build` : Build the docker image
 - `docker-push` : Push the docker image
 - `docker-pull-short-tag` : Pull the docker image based in git short hash
 - `docker-tag-env` : Tag the docker image based in the environment
 - `docker-publish` : Publish the docker image
-- `deploy` : Deploy the Template dotnet core console app
+- `deploy` : Deploy the Init stack
 - `update-packages` : Update the packages`
 
 ## 💻 Development
@@ -82,11 +82,11 @@ Before you begin, ensure you have met the following requirements:
 ### ➕ Add a project
 
 ```
-dotnet new classlib -n TemplateDotnetCoreConsoleApp.Core -o ./src/TemplateDotnetCoreConsoleApp.Core
-dotnet new nunit -n TemplateDotnetCoreConsoleApp.Core.Tests -o ./tests/TemplateDotnetCoreConsoleApp.Core.Tests
-dotnet sln TemplateDotnetCoreConsoleApp.sln add ./src/TemplateDotnetCoreConsoleApp.Core/TemplateDotnetCoreConsoleApp.Core.csproj
-dotnet sln TemplateDotnetCoreConsoleApp.sln add ./tests/TemplateDotnetCoreConsoleApp.Core.Tests/TemplateDotnetCoreConsoleApp.Core.Tests.csproj
-dotnet sln TemplateDotnetCoreConsoleApp.sln list
+dotnet new classlib -n InitStack.Core -o ./src/InitStack.Core
+dotnet new nunit -n InitStack.Core.Tests -o ./tests/InitStack.Core.Tests
+dotnet sln InitStack.sln add ./src/InitStack.Core/InitStack.Core.csproj
+dotnet sln InitStack.sln add ./tests/InitStack.Core.Tests/InitStack.Core.Tests.csproj
+dotnet sln InitStack.sln list
 ```
 
 ### 🔄 Versioning

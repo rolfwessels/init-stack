@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
-namespace TemplateDotnetCoreConsoleApp.Cmd;
+namespace InitStack.Cmd;
 
 public sealed class DefaultCommand : AsyncCommand<DefaultCommand.Settings>
 {

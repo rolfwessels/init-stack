@@ -1,7 +1,7 @@
 using FluentAssertions;
 using NUnit.Framework;
 
-namespace TemplateDotnetCoreConsoleApp.Cmd.Tests;
+namespace InitStack.Cmd.Tests;
 
 public class DefaultCommandTests
 {

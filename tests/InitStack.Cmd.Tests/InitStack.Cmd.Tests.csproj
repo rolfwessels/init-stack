@@ -29,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\TemplateDotnetCoreConsoleApp.Cmd\TemplateDotnetCoreConsoleApp.Cmd.csproj" />
+    <ProjectReference Include="..\..\src\InitStack.Cmd\InitStack.Cmd.csproj" />
   </ItemGroup>
 
 </Project>
