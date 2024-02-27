@@ -28,6 +28,14 @@ public sealed class NewCommand : AsyncCommand<NewCommand.Settings>
     [CommandOption("--init-git")]
     [Description("Initialize git repo")]
     public bool? InitGit { get; set; }
+
+    [CommandOption("--git-name")]
+    [Description("Set git username at init")]
+    public string? GitUser { get; set; }
+
+    [CommandOption("--git-email")]
+    [Description("Set git email at init")]
+    public string? GitEmail { get; set; }
   }
 
 
@@ -51,13 +59,23 @@ public sealed class NewCommand : AsyncCommand<NewCommand.Settings>
     if (settings.InitGit ?? GlobalSettings.Default.InitGitByDefault)
     {
       var gitHistory = new GitHistory();
-      if (gitHistory.GetCurrentUser() == "")
+      if (settings.GitUser != null)
+      {
+        gitHistory.OverrideUser = settings.GitUser;
+      }
+
+      if (settings.GitEmail != null)
+      {
+        gitHistory.OverrideEmail = settings.GitEmail;
+      }
+
+      if (settings.GitUser == null && gitHistory.GetCurrentUser() == "")
       {
         var user = AnsiConsole.Prompt(new TextPrompt<string>("What is your git user name?"));
         gitHistory.OverrideUser = user;
       }
 
-      if (gitHistory.GetCurrentUserEmail() == "")
+      if (settings.GitEmail == null && gitHistory.GetCurrentUserEmail() == "")
       {
         var email = AnsiConsole.Prompt(new TextPrompt<string>("What is your git email?"));
         gitHistory.OverrideEmail = email;

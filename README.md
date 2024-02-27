@@ -32,9 +32,10 @@ If you know the project name then just use the name
 ```bash
 .\init-stack new template-dotnet-core-console-app NewConsoleApp -o .
 ```
-
-
-
+The new project will also be adding a git init with a commit message. If you would like to override the user and email run 
+```bash
+.\init-stack new template-dotnet-core-console-app NewConsoleApp -o . --git-name rolf --git-email rolf@home.com
+```
 
 ## 📦 Technology
 
