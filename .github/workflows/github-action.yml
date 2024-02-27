@@ -32,7 +32,7 @@ jobs:
       - name: Check the publish Command
         run: make publish
       - name: Test the published command
-        run: ./dist/release/linux-x64/init-stack new template-dotnet-core-console-app NewConsoleApp -o .
+        run: ./dist/release/linux-x64/init-stack new template-dotnet-core-console-app NewConsoleApp -o . --git-name rolf --git-email rolf@home.com
   publish-dev:
     needs: test
     runs-on: ubuntu-latest
