@@ -8,7 +8,7 @@ using Serilog.Events;
 using Spectre.Console;
 using Spectre.Console.Cli;
 
-namespace TemplateDotnetCoreConsoleApp.Cmd;
+namespace InitStack.Cmd;
 
 internal class Program
 {
@@ -17,19 +17,20 @@ internal class Program
     Log.Logger = CreateLogger();
     var app = new CommandApp();
     Console.OutputEncoding = Encoding.UTF8;
+
     app.Configure(config =>
     {
-      config.SetApplicationName("TemplateDotnetCoreConsoleApp");
+      config.SetApplicationName("Init-Stack");
       config.SetExceptionHandler(e =>
       {
         Log.Logger.Error(e, e.Message);
         AnsiConsole.MarkupLine($"[red]Error:[/]{Markup.Escape(e.Message)}");
       });
 
-      config.AddCommand<DefaultCommand>(DefaultCommand.Name)
+      config.AddCommand<NewCommand>(NewCommand.Name)
         .WithAlias("d")
-        .WithDescription(DefaultCommand.Desc)
-        .WithExample(DefaultCommand.Name, "-t true", "DarthPedro");
+        .WithDescription(NewCommand.Description);
+      // .WithExample(DefaultCommand.Name, "-t true", "DarthPedro");
       config.ValidateExamples();
     });
 
@@ -41,8 +42,8 @@ internal class Program
     return new LoggerConfiguration()
       .MinimumLevel.Information()
       .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
-      .WriteTo.Console()
-      .WriteTo.RollingFile(Path.Combine(Path.GetTempPath(), "TemplateDotnetCoreConsoleApp.log"))
+      // .WriteTo.Console()
+      .WriteTo.RollingFile(Path.Combine(Path.GetTempPath(), "init-stack.log"))
       .CreateLogger();
   }
 }

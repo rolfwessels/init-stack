@@ -1,27 +1,42 @@
-[![Github release](https://img.shields.io/github/v/release/rolfwessels/template-dotnet-core-console-app)](https://github.com/rolfwessels/template-dotnet-core-console-app/releases)
-[![Dockerhub Status](https://img.shields.io/badge/dockerhub-ok-blue.svg)](https://hub.docker.com/r/rolfwessels/template-dotnet-core-console-app/tags)
-[![Dockerhub Version](https://img.shields.io/docker/v/rolfwessels/template-dotnet-core-console-app?sort=semver)](https://hub.docker.com/r/rolfwessels/template-dotnet-core-console-app/tags)
-[![GitHub](https://img.shields.io/github/license/rolfwessels/template-dotnet-core-console-app)](https://github.com/rolfwessels/template-dotnet-core-console-app/licence.md)
+[![Github release](https://img.shields.io/github/v/release/rolfwessels/init-stack)](https://github.com/rolfwessels/init-stack/releases)
+[![GitHub](https://img.shields.io/github/license/rolfwessels/init-stack)](https://github.com/rolfwessels/init-stack/licence.md)
 
 
-![Template dotnet core console app](./docs/logo.png)
+![Init stack](./docs/logo.png)
 
-# 🌐 Template dotnet core console app
+# 🌐 Init stack
 
-This makes template dotnet core console app happen
+Streamline your project setup with Smart Templating. Init-Stack automates the initial setup of new software projects by cloning your chosen GitHub repository template, then intelligently renaming files and replacing identifiers within the source code to match your new project's name.
 
-## 📦 Technology
+## 🔍 Using the cli
 
-* [Serilog](https://serilog.net/) for logging and all the extensibility including plugins to push to [loki](https://grafana.com/oss/loki/)
-* [Spectre.Console](https://spectreconsole.net/) for amazing interactive console applications.
-* [NUnit](https://nunit.org/) for unit tests
-* [FluentAssertions](https://fluentassertions.com/) for readable assertions
-* [Docker](https://www.docker.com/)  for easy deployment and setting up of developer environment
-* [MakeFile](https://opensource.com/article/18/8/what-how-makefile)  because it just works!
+Just pick a project and then a new file name
+
+```bash
+.\init-stack new 
+```
+
+If you have a folder that you would like to use as template then call.
+```cmd
+.\init-stack new c:\project\Template\MyprojectName 
+```
+
+To set the output name and folder, run the following
+```cmd
+.\init-stack new c:\project\Template\MyprojectName MyNewName -o c:\Project\
+```
+
+If you know the project name then just use the name
+```bash
+.\init-stack new template-dotnet-core-console-app NewConsoleApp -o .
+```
+The new project will also be adding a git init with a commit message. If you would like to override the user and email run 
+```bash
+.\init-stack new template-dotnet-core-console-app NewConsoleApp -o . --git-name rolf --git-email rolf@home.com
+```
 
 
-
-## 🚀 Getting started
+## 🚀 Getting started as developer
 
 This project comes with a development container will all the tooling required to build publish and deploy a project. Simply run the following commands to start development in the container.
 
@@ -65,16 +80,16 @@ Before you begin, ensure you have met the following requirements:
 
 ### 🐳 Commands to run inside the container
 
-- `start` : Run the Template dotnet core console app
-- `test` : Test the Template dotnet core console app
-- `publish` : Publish the Template dotnet core console app
+- `start` : Run the Init stack
+- `test` : Test the Init stack
+- `publish` : Publish the Init stack
 - `docker-login` : Login to docker registry
 - `docker-build` : Build the docker image
 - `docker-push` : Push the docker image
 - `docker-pull-short-tag` : Pull the docker image based in git short hash
 - `docker-tag-env` : Tag the docker image based in the environment
 - `docker-publish` : Publish the docker image
-- `deploy` : Deploy the Template dotnet core console app
+- `deploy` : Deploy the Init stack
 - `update-packages` : Update the packages`
 
 ## 💻 Development
@@ -82,11 +97,11 @@ Before you begin, ensure you have met the following requirements:
 ### ➕ Add a project
 
 ```
-dotnet new classlib -n TemplateDotnetCoreConsoleApp.Core -o ./src/TemplateDotnetCoreConsoleApp.Core
-dotnet new nunit -n TemplateDotnetCoreConsoleApp.Core.Tests -o ./tests/TemplateDotnetCoreConsoleApp.Core.Tests
-dotnet sln TemplateDotnetCoreConsoleApp.sln add ./src/TemplateDotnetCoreConsoleApp.Core/TemplateDotnetCoreConsoleApp.Core.csproj
-dotnet sln TemplateDotnetCoreConsoleApp.sln add ./tests/TemplateDotnetCoreConsoleApp.Core.Tests/TemplateDotnetCoreConsoleApp.Core.Tests.csproj
-dotnet sln TemplateDotnetCoreConsoleApp.sln list
+dotnet new classlib -n InitStack.Core -o ./src/InitStack.Core
+dotnet new nunit -n InitStack.Core.Tests -o ./tests/InitStack.Core.Tests
+dotnet sln InitStack.sln add ./src/InitStack.Core/InitStack.Core.csproj
+dotnet sln InitStack.sln add ./tests/InitStack.Core.Tests/InitStack.Core.Tests.csproj
+dotnet sln InitStack.sln list
 ```
 
 ### 🔄 Versioning

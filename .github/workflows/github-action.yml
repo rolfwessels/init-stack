@@ -18,6 +18,8 @@ jobs:
     
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
@@ -25,8 +27,12 @@ jobs:
 
       - name: Test
         run: make test
-      - name: execute console to see if it runs
+      - name: Check the start Command
         run: make start
+      - name: Check the publish Command
+        run: make publish
+      - name: Test the published command
+        run: ./dist/release/linux-x64/init-stack new template-dotnet-core-console-app NewConsoleApp -o . --git-name rolf --git-email rolf@home.com
   publish-dev:
     needs: test
     runs-on: ubuntu-latest
@@ -42,11 +48,14 @@ jobs:
           dotnet-version: 8.0.x
       - name: Publish console apps
         run: make publish
-      - name: Build Docker image
-        run: make docker-build
-      - name: Push images to Docker Hub
-        if: github.ref == 'refs/heads/main' || startsWith(github.event.head_commit.message, 'deploy')
-        run: make #docker-login docker-push deploy env=dev
+      - uses: actions/upload-artifact@v4
+        with:
+          name: init-stack-linux-x64
+          path: ./dist/release/linux-x64/
+      - uses: actions/upload-artifact@v4
+        with:
+            name: init-stack-win-x64
+            path: ./dist/release/win-x64/
   publish-prod:
     if: contains(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest

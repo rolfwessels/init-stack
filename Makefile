@@ -2,7 +2,7 @@
 
 # General Variables
 date=$(shell date +'%y.%m.%d.%H.%M')
-project := Template dotnet core console app
+project := Init stack
 container := dev
 docker-file-check := /.dockerenv
 docker-warning := ""
@@ -13,7 +13,7 @@ versionPrefix := 0.1
 version := $(versionPrefix).$(shell git rev-list HEAD --count)
 git-short-hash := $(shell git rev-parse --short=8 HEAD)
 version-suffix := ''
-dockerhub := dockerhub.com/template-dotnet-core-console-app
+dockerhub := dockerhub.com/init-stack
 
 release := release
 ifeq ($(env), dev)
@@ -33,6 +33,7 @@ ifeq ($(current-branch), main)
 	docker-tags := -t $(dockerhub):alpha -t $(dockerhub):latest -t $(dockerhub):v$(version) -t $(dockerhub):$(git-short-hash)
 	version-full := $(version)
 else
+
 	version := $(versionPrefix).$(shell git rev-list origin/main --count).$(shell git rev-list origin/main..HEAD --count)
 	version-suffix := alpha
 	version-full := $(version)-$(version-suffix)
@@ -100,11 +101,11 @@ version:
 
 start: 
 	@echo -e "Starting the $(release) release of $(project)"
-	@cd src/TemplateDotnetCoreConsoleApp.Cmd; dotnet run -- --help
+	@cd src/InitStack.Cmd; dotnet run -- --help
 
 test: 
 	@echo -e "Testing ${GREEN}v${version}${NC}"
-	@dotnet test TemplateDotnetCoreConsoleApp.sln --logger:trx --results-directory ../TestResults \
+	@dotnet test InitStack.sln --logger:trx --results-directory ../TestResults \
 		 /p:CollectCoverage=true \
 		 /p:CoverletOutput=../TestResults/ \
 		 /p:MergeWith=../TestResults/coverlet.info \
@@ -114,22 +115,22 @@ test:
 publish: 
 	@echo -e "Building the ${GREEN}v${version}${NC}-$(release) release of $(project)"
 		
-	@dotnet publish src/TemplateDotnetCoreConsoleApp.Cmd/TemplateDotnetCoreConsoleApp.Cmd.csproj -r linux-x64 -c $(release) \
+	@dotnet publish src/InitStack.Cmd/InitStack.Cmd.csproj -r linux-x64 -c $(release) \
 		-p:DebugType=None \
 		-p:DebugSymbols=false \
 		-p:PublishSingleFile=true \
-		-p:PublishTrimmed=true  \
-		-p:SelfContained=true \
+		-p:PublishTrimmed=false  \
+		-p:SelfContained=false \
 		-p:VersionSuffix=$(version-suffix) \
 		-p:FileVersion=$(version) \
 		-p:VersionPrefix=$(version) \
 	--output ./dist/$(release)/linux-x64 
-	@dotnet publish src/TemplateDotnetCoreConsoleApp.Cmd/TemplateDotnetCoreConsoleApp.Cmd.csproj -r win-x64 -c $(release) \
+	@dotnet publish src/InitStack.Cmd/InitStack.Cmd.csproj -r win-x64 -c $(release) \
 		-p:DebugType=None \
 		-p:DebugSymbols=false \
 		-p:PublishSingleFile=true \
-		-p:PublishTrimmed=true  \
-		-p:SelfContained=true \
+		-p:PublishTrimmed=false  \
+		-p:SelfContained=false \
 		-p:VersionSuffix=$(version-suffix) \
 		-p:FileVersion=$(version) \
 		-p:VersionPrefix=$(version) \
@@ -145,7 +146,7 @@ docker-login:
 
 docker-build:
 	@echo -e "Building branch ${RED}$(current-branch)${NC} to ${GREEN}$(docker-tags)${NC} with ${GREEN}$(version-full)${NC}"
-	@cd src && docker build -f TemplateDotnetCoreConsoleApp.Cmd/Dockerfile --build-arg VERSION=$(version) --build-arg VERSION_SUFFIX=$(version-suffix) ${docker-tags} .
+	@cd src && docker build -f InitStack.Cmd/Dockerfile --build-arg VERSION=$(version) --build-arg VERSION_SUFFIX=$(version-suffix) ${docker-tags} .
 
 docker-push:
 	@echo -e "Pushing to ${GREEN}$(docker-tags)${NC}"
