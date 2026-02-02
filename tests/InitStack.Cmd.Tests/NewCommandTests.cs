@@ -25,7 +25,7 @@ public class NewCommandTests
         TemplateSelected = "template-dotnet-core-console-app",
         NewSolutionName = newSolutionName,
         InitGit = false
-      });
+      }, CancellationToken.None);
       // assert
       executeAsync.Should().Be(0);
       Directory.Exists(newStackFolder).Should().BeTrue();

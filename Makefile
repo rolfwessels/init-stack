@@ -60,6 +60,7 @@ help:
 	@echo "   - start                 : Run the $(project)"
 	@echo "   - test                  : Test the $(project)"
 	@echo "   - publish               : Publish the $(project)"
+	@echo "   - package               : Package the binaries into ZIP files"
 	@echo "   - docker-login          : Login to docker registry"
 	@echo "   - docker-build          : Build the docker image"
 	@echo "   - docker-push           : Push the docker image"
@@ -96,7 +97,8 @@ build: down
 
 version:
 	@echo -e "Setting version number ${GREEN}v${version}${NC} "
-	@echo '{ "version": "${version}" }' > src/version.json
+	@echo '{ "version": "v${version}" }' > src/version.json
+	@echo "v${version}" > dist/version.txt
 
 
 start: 
@@ -135,6 +137,16 @@ publish:
 		-p:FileVersion=$(version) \
 		-p:VersionPrefix=$(version) \
 		--output ./dist/$(release)/win-x64 
+
+package: publish
+	@echo -e "Packaging ${GREEN}v${version}${NC} binaries"
+	@mkdir -p dist/$(release)
+	@echo "v${version}" > dist/version.txt
+	@cd dist/$(release)/linux-x64 && zip -r ../init-stack-linux-x64-v$(version).zip .
+	@cd dist/$(release)/win-x64 && zip -r ../init-stack-win-x64-v$(version).zip .
+	@cd dist/$(release) && sha256sum init-stack-*.zip > checksums.txt
+	@echo -e "Packages created in ${GREEN}dist/$(release)/${NC}"
+	@ls -lh dist/$(release)/*.zip
 
 
 docker-login: 

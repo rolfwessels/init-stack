@@ -9,6 +9,9 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: write
+
 jobs:
   test:
     if: "!contains(github.ref, 'refs/tags/v')"
@@ -23,7 +26,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 9.0.x
 
       - name: Test
         run: make test
@@ -33,6 +36,7 @@ jobs:
         run: make publish
       - name: Test the published command
         run: ./dist/release/linux-x64/init-stack new template-dotnet-core-console-app NewConsoleApp -o . --git-name rolf --git-email rolf@home.com
+  
   publish-dev:
     needs: test
     runs-on: ubuntu-latest
@@ -45,7 +49,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 9.0.x
       - name: Publish console apps
         run: make publish
       - uses: actions/upload-artifact@v4
@@ -56,6 +60,63 @@ jobs:
         with:
             name: init-stack-win-x64
             path: ./dist/release/win-x64/
+  
+  release:
+    needs: test
+    if: |
+      github.ref == 'refs/heads/main' 
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+      
+      - name: Build binaries
+        run: make publish
+      
+      - name: Package binaries
+        run: make package
+      
+      - name: Read version
+        id: version
+        run: |
+          VERSION=$(cat dist/version.txt)
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "Version: ${VERSION}"
+      
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.version.outputs.version }}
+          name: Init Stack ${{ steps.version.outputs.version }}
+          body: |
+            ## Init Stack Release ${{ steps.version.outputs.version }}
+            
+            ### Downloads
+            - **Linux (x64)**: `init-stack-linux-x64-${{ steps.version.outputs.version }}.zip`
+            - **Windows (x64)**: `init-stack-win-x64-${{ steps.version.outputs.version }}.zip`
+            
+            ### Installation
+            1. Download the appropriate ZIP file for your platform
+            2. Extract the archive
+            3. Run the `init-stack` executable
+            
+            ### Checksums
+            See `checksums.txt` for SHA256 verification.
+          files: |
+            dist/release/init-stack-linux-x64-${{ steps.version.outputs.version }}.zip
+            dist/release/init-stack-win-x64-${{ steps.version.outputs.version }}.zip
+            dist/release/checksums.txt
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
   publish-prod:
     if: contains(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
@@ -68,7 +129,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0.x
+          dotnet-version: 9.0.x
       - name: Push images
         run: make #docker-pull-short-tag  docker-tag-env docker-push deploy env=latest
       

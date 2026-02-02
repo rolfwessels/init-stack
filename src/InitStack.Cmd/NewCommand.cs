@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using InitStack.Cmd.Sources;
 using Spectre.Console;
@@ -43,7 +44,7 @@ public sealed class NewCommand : AsyncCommand<NewCommand.Settings>
   public static string Description = "Initializes a new stack";
 
 
-  public override Task<int> ExecuteAsync(CommandContext context, Settings settings)
+  public override Task<int> ExecuteAsync(CommandContext context, Settings settings, CancellationToken cancellationToken)
   {
     var source = GetStackSource(settings.TemplateSelected);
     var toFolder = Path.GetFullPath(settings.OutputFolder ?? GlobalSettings.Default.DefaultOutputFolder);

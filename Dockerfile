@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0-alpine
+FROM mcr.microsoft.com/dotnet/sdk:9.0-alpine
 
 # Base Development Packages
 RUN apk update \
@@ -11,6 +11,7 @@ RUN apk update \
   bash \
   make \
   rsync \
+  zip \
   nano \
   zsh \
   zsh-vcs \
