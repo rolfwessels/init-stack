@@ -65,7 +65,7 @@ jobs:
     needs: test
     if: |
       github.ref == 'refs/heads/main' || 
-      contains(github.event.head_commit.message, 'deploy')
+      contains(toJSON(github.event.commits.*.message), 'deploy')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -87,14 +87,8 @@ jobs:
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
           echo "Version: ${VERSION}"
       
-      - name: Create ZIP archives
-        run: |
-          cd dist/release/linux-x64
-          zip -r ../init-stack-linux-x64-${{ steps.version.outputs.version }}.zip .
-          cd ../win-x64
-          zip -r ../init-stack-win-x64-${{ steps.version.outputs.version }}.zip .
-          cd ..
-          sha256sum init-stack-*.zip > checksums.txt
+      - name: Package binaries
+        run: make package
       
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
