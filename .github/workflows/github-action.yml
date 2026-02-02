@@ -64,8 +64,7 @@ jobs:
   release:
     needs: test
     if: |
-      github.ref == 'refs/heads/main' || 
-      contains(toJSON(github.event.commits.*.message), 'deploy')
+      github.ref != 'refs/heads/main' 
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
