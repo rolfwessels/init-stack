@@ -79,15 +79,15 @@ jobs:
       - name: Build binaries
         run: make publish
       
-      - name: Calculate version
-        id: version
-        run: |
-          VERSION=$(make version | grep -oP 'Setting version number \Kv[\d.]+' || echo "v0.1.0")
-          echo "version=${VERSION}" >> $GITHUB_OUTPUT
-          echo "Version: ${VERSION}"
-      
       - name: Package binaries
         run: make package
+      
+      - name: Read version
+        id: version
+        run: |
+          VERSION=$(cat dist/version.txt)
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "Version: ${VERSION}"
       
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1

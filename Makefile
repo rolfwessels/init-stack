@@ -97,7 +97,8 @@ build: down
 
 version:
 	@echo -e "Setting version number ${GREEN}v${version}${NC} "
-	@echo '{ "version": "${version}" }' > src/version.json
+	@echo '{ "version": "v${version}" }' > src/version.json
+	@echo "v${version}" > dist/version.txt
 
 
 start: 
@@ -139,6 +140,8 @@ publish:
 
 package: publish
 	@echo -e "Packaging ${GREEN}v${version}${NC} binaries"
+	@mkdir -p dist/$(release)
+	@echo "v${version}" > dist/version.txt
 	@cd dist/$(release)/linux-x64 && zip -r ../init-stack-linux-x64-v$(version).zip .
 	@cd dist/$(release)/win-x64 && zip -r ../init-stack-win-x64-v$(version).zip .
 	@cd dist/$(release) && sha256sum init-stack-*.zip > checksums.txt
