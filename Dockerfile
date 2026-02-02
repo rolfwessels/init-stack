@@ -11,6 +11,7 @@ RUN apk update \
   bash \
   make \
   rsync \
+  zip \
   nano \
   zsh \
   zsh-vcs \
