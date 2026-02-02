@@ -21,7 +21,7 @@ internal class Program
     app.Configure(config =>
     {
       config.SetApplicationName("Init-Stack");
-      config.SetExceptionHandler(e =>
+      config.SetExceptionHandler((e, resolver) =>
       {
         Log.Logger.Error(e, e.Message);
         AnsiConsole.MarkupLine($"[red]Error:[/]{Markup.Escape(e.Message)}");

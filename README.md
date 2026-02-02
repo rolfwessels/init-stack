@@ -1,124 +1,151 @@
 [![Github release](https://img.shields.io/github/v/release/rolfwessels/init-stack)](https://github.com/rolfwessels/init-stack/releases)
-[![GitHub](https://img.shields.io/github/license/rolfwessels/init-stack)](https://github.com/rolfwessels/init-stack/licence.md)
-
+[![GitHub](https://img.shields.io/github/license/rolfwessels/init-stack)](https://github.com/rolfwessels/init-stack/blob/main/LICENSE.txt)
 
 ![Init stack](./docs/logo.png)
 
-# 🌐 Init stack
+# 🌐 Init Stack
 
-Streamline your project setup with Smart Templating. Init-Stack automates the initial setup of new software projects by cloning your chosen GitHub repository template, then intelligently renaming files and replacing identifiers within the source code to match your new project's name.
+Streamline your project setup with intelligent templating. Init-Stack automates the creation of new software projects by cloning GitHub repository templates and intelligently renaming files and replacing identifiers throughout the source code to match your new project's name.
 
-## 🔍 Using the cli
+Built with .NET 8.0 and designed for cross-platform development.
 
-Just pick a project and then a new file name
+## 🔍 Using the CLI
+
+### Quick Start
+
+Create a new project from a template:
 
 ```bash
-.\init-stack new 
+.\init-stack new
 ```
 
-If you have a folder that you would like to use as template then call.
-```cmd
-.\init-stack new c:\project\Template\MyprojectName 
+### Using a Local Template
+
+Use a local folder as a template:
+
+```bash
+.\init-stack new c:\project\Template\MyprojectName
 ```
 
-To set the output name and folder, run the following
-```cmd
+### Specify Output Name and Location
+
+```bash
 .\init-stack new c:\project\Template\MyprojectName MyNewName -o c:\Project\
 ```
 
-If you know the project name then just use the name
+### Using Template Names
+
+If you know the template name:
+
 ```bash
 .\init-stack new template-dotnet-core-console-app NewConsoleApp -o .
 ```
-The new project will also be adding a git init with a commit message. If you would like to override the user and email run 
+
+### Custom Git Configuration
+
+The new project initializes with git and creates an initial commit. Override the git user and email:
+
 ```bash
-.\init-stack new template-dotnet-core-console-app NewConsoleApp -o . --git-name rolf --git-email rolf@home.com
+.\init-stack new template-dotnet-core-console-app NewConsoleApp -o . --git-name "Your Name" --git-email "your.email@example.com"
 ```
 
 
-## 🚀 Getting started as developer
+## 🚀 Getting Started as a Developer
 
-This project comes with a development container will all the tooling required to build publish and deploy a project. Simply run the following commands to start development in the container.
+This project includes a development container with all required tooling for building, publishing, and deploying.
+
+### Quick Setup
 
 ```bash
-# bring up dev environment
+# Bring up the development environment
 make build up
-# test the project
+
+# Test the project
 make test
-# run default package
+
+# Run the application
 make start
-# build the project ready for publish
+
+# Build for production
 make publish
 ```
 
-To deploy a docker image you can use the following commands
+### Docker Deployment
 
 ```bash
-# Build docker images and push to repository
-make docker-build docker-login docker-push 
-# or just
+# Build, login, and push Docker images
 make docker-publish
-# to make an additional release of the docker image for this branch
-make  docker-pull-short-tag docker-tag-env env=latest
-# to update the deployment call
+
+# Tag a specific environment release
+make docker-pull-short-tag docker-tag-env env=latest
+
+# Deploy to an environment
 make deploy env=dev
 ```
 ## 🛠 Prerequisites
 
-Before you begin, ensure you have met the following requirements:
-- Docker installed on your machine. See [Docker installation guide](https://docs.docker.com/get-docker/).
-- Git, for version control. [Install Git](https://git-scm.com/downloads).
-- Ability to run make file, eg. `wsl` 
+- **Docker**: Required for containerized development. [Installation guide](https://docs.docker.com/get-docker/)
+- **Git**: For version control. [Download Git](https://git-scm.com/downloads)
+- **Make**: Command runner (available via WSL on Windows)
+- **.NET 8.0 SDK**: For local development outside containers 
 
-## 📋 Available make commands
+## 📋 Available Make Commands
 
-### 💻 Commands outside the container
+### 💻 Local Machine Commands
 
-- `make up` : brings up the container & attach to the default container
-- `make down` : stops the container
-- `make build` : builds the container
+- `make up`: Start the container and attach to the default shell
+- `make down`: Stop the container
+- `make build`: Rebuild the container
 
-### 🐳 Commands to run inside the container
+### 🐳 Container Commands
 
-- `start` : Run the Init stack
-- `test` : Test the Init stack
-- `publish` : Publish the Init stack
-- `docker-login` : Login to docker registry
-- `docker-build` : Build the docker image
-- `docker-push` : Push the docker image
-- `docker-pull-short-tag` : Pull the docker image based in git short hash
-- `docker-tag-env` : Tag the docker image based in the environment
-- `docker-publish` : Publish the docker image
-- `deploy` : Deploy the Init stack
-- `update-packages` : Update the packages`
+- `make version`: Display current version number
+- `make start`: Run Init Stack
+- `make test`: Run tests with coverage
+- `make publish`: Build production artifacts
+- `make docker-login`: Authenticate with Docker registry
+- `make docker-build`: Build Docker image
+- `make docker-push`: Push Docker image to registry
+- `make docker-pull-short-tag`: Pull image by git hash
+- `make docker-tag-env`: Tag image for specific environment
+- `make docker-publish`: Complete Docker build and publish workflow
+- `make deploy`: Deploy to specified environment
+- `make update-packages`: Update NuGet packages to latest versions
 
 ## 💻 Development
 
-### ➕ Add a project
+### Adding a New Project
 
-```
+```bash
+# Create a new class library
 dotnet new classlib -n InitStack.Core -o ./src/InitStack.Core
+
+# Create corresponding test project
 dotnet new nunit -n InitStack.Core.Tests -o ./tests/InitStack.Core.Tests
+
+# Add to solution
 dotnet sln InitStack.sln add ./src/InitStack.Core/InitStack.Core.csproj
 dotnet sln InitStack.sln add ./tests/InitStack.Core.Tests/InitStack.Core.Tests.csproj
+
+# Verify
 dotnet sln InitStack.sln list
 ```
 
 ### 🔄 Versioning
 
-Semantic Versioning (SemVer) is a versioning scheme for software that conveys meaning about the underlying changes. It's composed of three segments:
+This project follows [Semantic Versioning (SemVer)](https://semver.org/):
 
-1. **Major** version (`MAJOR`): Incremented for incompatible API changes.
-2. **Minor** version (`MINOR`): Incremented for backward-compatible functionality additions.
-3. **Patch** version (`PATCH`): Incremented for backward-compatible bug fixes.
+- **MAJOR**: Incompatible API changes
+- **MINOR**: Backward-compatible functionality additions
+- **PATCH**: Backward-compatible bug fixes
 
-Updating version numbers:
+**Version Management:**
 
-- Manual updates to `MAJOR` and `MINOR` versions using a `versionPrefix` variable in the makefile.
-- Automatic determination of `PATCH` levels based on commit messages in the `main` branch.
-- Addition of pre-release identifiers for non-main branches, derived from the commit delta between feature branches and the main branch.
+- `MAJOR` and `MINOR` versions are set manually via the `versionPrefix` variable in the Makefile
+- `PATCH` levels are automatically determined from commit count on the `main` branch
+- Feature branches include pre-release identifiers based on commit delta from `main`
 
-To test what the current version is just call
+**Check Current Version:**
 
 ```bash
 make version
@@ -126,43 +153,57 @@ make version
 
 ## 🔄 Development Workflow
 
-Our project adheres to a modified version of the [Git Flow](https://nvie.com/posts/a-successful-git-branching-model/) workflow, tailored to streamline our release process.
+This project uses a modified [Git Flow](https://nvie.com/posts/a-successful-git-branching-model/) workflow optimized for continuous delivery.
 
-### Feature/Bug Branches
+### Branching Strategy
 
-- **Creation**: Developers create feature branches off the `main` branch for new features or bug fixes.
-- **Naming Convention**: Feature branches are named with the prefix `feature/` followed by a descriptive name (e.g., `feature/add-login`).
-- **Bug fixes**: Branches are named with the prefix `bug/` followed by a descriptive name (e.g., `bug/fix-login-button`).
+**Feature/Bug Branches**
 
-### Main Branch
+- Create from `main` branch
+- Naming: `feature/description` or `bug/description`
+- Examples: `feature/add-login`, `bug/fix-login-button`
 
-- The `main` branch holds the production-ready code.
-- Changes from `feature` are merged into `main` when they are complete
-- The build pipeline will deploy from `main` to development environments as required
+**Main Branch**
 
-### Releases
+- Production-ready code
+- Feature branches merge here when complete
+- CI/CD pipeline deploys to development environments
 
-- **Tagging**: Instead of creating a release branch, we use tags to mark a new release.
-- **Process**:
-  1. When we're ready to release, we ensure that `main` is stable and all desired changes for the release have been merged.
-  2. We then create a tag from the `main` branch with the version number, following [Semantic Versioning](https://semver.org/) (e.g., `v1.2.0`).
-  4. The tagged commit in the `main` branch is considered the official release of that version.
+**Releases**
 
-### Hotfixes
+- Use **tags** instead of release branches
+- Process:
+  1. Ensure `main` branch is stable
+  2. Merge all desired changes
+  3. Create a version tag (e.g., `v1.2.0`)
+  4. Tagged commit is the official release
 
-- Hotfixes are created off the `v1.xxx` tag if urgent fixes are needed in production.
-- Once completed, hotfixes are merged back into both `main`, and a new tag is created to mark the hotfix release (e.g., `v1.2.1`).
+**Hotfixes**
 
-## FAQ
+- Create from specific `v1.xxx` tag
+- Merge back to `main`
+- Create new patch tag (e.g., `v1.2.1`)
 
-**Question**: Can I use this application on Windows or Linux?
+## ❓ FAQ
 
-**Answer**: Yes, the application is cross-platform and can be run on Linux, macOS, and Windows.
+**Q: Is this application cross-platform?**
 
-**Question**: How do I update to the latest version?
+A: Yes, Init Stack runs on Linux, macOS, and Windows.
 
-**Answer**: Pull the latest changes from the repository and rebuild your Docker container.
+**Q: How do I update to the latest version?**
 
-## Research
+A: Pull the latest changes from the repository and rebuild your Docker container, or download the latest release from GitHub.
 
-- <https://opensource.com/article/18/8/what-how-makefile> What is a Makefile and how does it work?
+**Q: What templates are available?**
+
+A: You can use any GitHub repository as a template, or create your own local templates.
+
+## 📚 Resources
+
+- [What is a Makefile?](https://opensource.com/article/18/8/what-how-makefile)
+- [Git Flow Workflow](https://nvie.com/posts/a-successful-git-branching-model/)
+- [Semantic Versioning](https://semver.org/)
+
+## 📄 License
+
+This project is licensed under the terms specified in [LICENSE.txt](LICENSE.txt).
