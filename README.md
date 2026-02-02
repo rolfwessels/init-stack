@@ -7,7 +7,7 @@
 
 Streamline your project setup with intelligent templating. Init-Stack automates the creation of new software projects by cloning GitHub repository templates and intelligently renaming files and replacing identifiers throughout the source code to match your new project's name.
 
-Built with .NET 8.0 and designed for cross-platform development.
+Built with .NET 9.0 and designed for cross-platform development.
 
 ## 🔍 Using the CLI
 
@@ -87,7 +87,7 @@ make deploy env=dev
 - **Docker**: Required for containerized development. [Installation guide](https://docs.docker.com/get-docker/)
 - **Git**: For version control. [Download Git](https://git-scm.com/downloads)
 - **Make**: Command runner (available via WSL on Windows)
-- **.NET 8.0 SDK**: For local development outside containers 
+- **.NET 9.0 SDK**: For local development outside containers 
 
 ## 📋 Available Make Commands
 
