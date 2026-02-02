@@ -28,7 +28,8 @@ public class GlobalSettings(IConfiguration configuration) : BaseSettings(configu
     new[]
     {
       "https://github.com/rolfwessels/template-dotnet-core-graphql-app.git",
-      "https://github.com/rolfwessels/template-dotnet-core-console-app.git"
+      "https://github.com/rolfwessels/template-dotnet-core-console-app.git",
+      "https://github.com/rolfwessels/template-react-spa-site.git"
     });
 
   public string[] CommitMessages => ReadConfigValue("CommitMessages",
