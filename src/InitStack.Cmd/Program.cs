@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Serilog;
@@ -18,9 +19,11 @@ internal class Program
     var app = new CommandApp();
     Console.OutputEncoding = Encoding.UTF8;
 
+    var version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "dev";
     app.Configure(config =>
     {
       config.SetApplicationName("Init-Stack");
+      config.SetApplicationVersion(version);
       config.SetExceptionHandler((e, resolver) =>
       {
         Log.Logger.Error(e, e.Message);
