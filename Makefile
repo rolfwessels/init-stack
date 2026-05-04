@@ -142,8 +142,8 @@ package: publish
 	@echo -e "Packaging ${GREEN}v${version}${NC} binaries"
 	@mkdir -p dist/$(release)
 	@echo "v${version}" > dist/version.txt
-	@cd dist/$(release)/linux-x64 && zip -r ../init-stack-linux-x64-v$(version).zip .
-	@cd dist/$(release)/win-x64 && zip -r ../init-stack-win-x64-v$(version).zip .
+	@cd dist/$(release)/linux-x64 && zip -r ../init-stack-linux-x64.zip .
+	@cd dist/$(release)/win-x64 && zip -r ../init-stack-win-x64.zip .
 	@cd dist/$(release) && sha256sum init-stack-*.zip > checksums.txt
 	@echo -e "Packages created in ${GREEN}dist/$(release)/${NC}"
 	@ls -lh dist/$(release)/*.zip
