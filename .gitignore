@@ -12,3 +12,4 @@
 dist/*
 tests/**/TestResults/**/*
 src/version.json
+templates/
