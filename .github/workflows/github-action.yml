@@ -2,9 +2,9 @@ name: .NET
 
 on:
   push:
-    branches: 
+    branches:
       - 'main'
-    tags:        
+    tags:
       - 'v*'
   pull_request:
     branches: [main]
@@ -20,11 +20,11 @@ jobs:
       RedisHost: localhost
     
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 9.0.x
 
@@ -43,36 +43,35 @@ jobs:
     env:
       RedisHost: localhost
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 9.0.x
       - name: Publish console apps
         run: make publish
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: init-stack-linux-x64
           path: ./dist/release/linux-x64/
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
             name: init-stack-win-x64
             path: ./dist/release/win-x64/
   
   release:
     needs: test
-    if: |
-      github.ref == 'refs/heads/main' 
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 9.0.x
       
@@ -90,27 +89,27 @@ jobs:
           echo "Version: ${VERSION}"
       
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: ${{ steps.version.outputs.version }}
           name: Init Stack ${{ steps.version.outputs.version }}
           body: |
-            ## Init Stack Release ${{ steps.version.outputs.version }}
-            
-            ### Downloads
-            - **Linux (x64)**: `init-stack-linux-x64-${{ steps.version.outputs.version }}.zip`
-            - **Windows (x64)**: `init-stack-win-x64-${{ steps.version.outputs.version }}.zip`
-            
-            ### Installation
-            1. Download the appropriate ZIP file for your platform
-            2. Extract the archive
-            3. Run the `init-stack` executable
-            
-            ### Checksums
+            ## Init Stack ${{ steps.version.outputs.version }}
+
+            **Linux:**
+            ```bash
+            curl -fsSL https://raw.githubusercontent.com/rolfwessels/init-stack/main/scripts/install.sh | sh
+            ```
+
+            **Windows (PowerShell):**
+            ```powershell
+            irm https://raw.githubusercontent.com/rolfwessels/init-stack/main/scripts/install.ps1 | iex
+            ```
+
             See `checksums.txt` for SHA256 verification.
           files: |
-            dist/release/init-stack-linux-x64-${{ steps.version.outputs.version }}.zip
-            dist/release/init-stack-win-x64-${{ steps.version.outputs.version }}.zip
+            dist/release/init-stack-linux-x64.zip
+            dist/release/init-stack-win-x64.zip
             dist/release/checksums.txt
           draft: false
           prerelease: false
@@ -123,11 +122,11 @@ jobs:
     env:
       RedisHost: localhost
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: 9.0.x
       - name: Push images

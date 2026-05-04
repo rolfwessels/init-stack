@@ -11,39 +11,15 @@ Built with .NET 9.0 and designed for cross-platform development.
 
 ## 📥 Installation
 
-### Download Pre-built Binaries (Recommended)
-
-Download the latest release for your platform from the [GitHub Releases page](https://github.com/rolfwessels/init-stack/releases/latest):
-
-**Linux (x64):**
+**Linux:**
 ```bash
-# Download and extract
-wget https://github.com/rolfwessels/init-stack/releases/latest/download/init-stack-linux-x64-v*.zip
-unzip init-stack-linux-x64-v*.zip
-cd linux-x64
-
-# Make executable and run
-chmod +x init-stack
-./init-stack new
+curl -fsSL https://raw.githubusercontent.com/rolfwessels/init-stack/main/scripts/install.sh | sh
 ```
 
-**Windows (x64):**
-1. Download `init-stack-win-x64-v*.zip` from the releases page
-2. Extract the ZIP file
-3. Run `init-stack.exe` from the extracted folder
-
-**Verify Download (Optional):**
-```bash
-# Download checksums file
-wget https://github.com/rolfwessels/init-stack/releases/latest/download/checksums.txt
-
-# Verify the downloaded ZIP
-sha256sum -c checksums.txt
+**Windows (PowerShell):**
+```powershell
+irm https://raw.githubusercontent.com/rolfwessels/init-stack/main/scripts/install.ps1 | iex
 ```
-
-### Build from Source
-
-If you prefer to build from source, see the [Developer Setup](#-getting-started-as-a-developer) section below.
 
 ## 🔍 Using the CLI
 
