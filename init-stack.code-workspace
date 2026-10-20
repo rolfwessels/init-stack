@@ -4,7 +4,19 @@
 			"path": "."
 		},
 		{
-			"path": "../templates"
+			"path": "../template-dotnet-core-console-app"
+		},
+		{
+			"path": "../template-dotnet-core-graphql-app"
+		},
+		{
+			"path": "../template-go-agent"
+		},
+		{
+			"path": "../template-go-console-app"
+		},
+		{
+			"path": "../template-react-spa-site"
 		}
 	],
 	"settings": {}

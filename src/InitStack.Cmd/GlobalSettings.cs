@@ -30,7 +30,8 @@ public class GlobalSettings(IConfiguration configuration) : BaseSettings(configu
       "https://github.com/rolfwessels/template-dotnet-core-graphql-app.git",
       "https://github.com/rolfwessels/template-dotnet-core-console-app.git",
       "https://github.com/rolfwessels/template-react-spa-site.git",
-      "https://github.com/rolfwessels/template-go-console-app.git"
+      "https://github.com/rolfwessels/template-go-console-app.git",
+      "https://github.com/rolfwessels/template-go-agent.git"
     });
 
   public string[] CommitMessages => ReadConfigValue("CommitMessages",

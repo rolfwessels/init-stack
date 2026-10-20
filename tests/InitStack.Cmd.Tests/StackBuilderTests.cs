@@ -1,4 +1,4 @@
-using FluentAssertions;
+using AwesomeAssertions;
 using InitStack.Cmd.Sources;
 using NUnit.Framework;
 
