@@ -53,6 +53,16 @@ If you know the template name:
 .\init-stack new template-dotnet-core-console-app NewConsoleApp -o .
 ```
 
+### Available Templates
+
+The default template collection includes:
+
+- [template-dotnet-core-console-app](https://github.com/rolfwessels/template-dotnet-core-console-app) — .NET console application
+- [template-dotnet-core-graphql-app](https://github.com/rolfwessels/template-dotnet-core-graphql-app) — .NET GraphQL application
+- [template-go-agent](https://github.com/rolfwessels/template-go-agent) — Go AI agent
+- [template-go-console-app](https://github.com/rolfwessels/template-go-console-app) — Go console application
+- [template-react-spa-site](https://github.com/rolfwessels/template-react-spa-site) — React single-page application
+
 ### Custom Git Configuration
 
 The new project initializes with git and creates an initial commit. Override the git user and email:
@@ -209,7 +219,7 @@ A: Pull the latest changes from the repository and rebuild your Docker container
 
 **Q: What templates are available?**
 
-A: You can use any GitHub repository as a template, or create your own local templates.
+A: See [Available Templates](#available-templates) for the default collection. You can also use any GitHub repository as a template, or create your own local templates.
 
 ## 📚 Resources
 

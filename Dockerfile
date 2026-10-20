@@ -23,7 +23,6 @@ RUN apk update \
 
 # zsh
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && \
-  git clone https://github.com/zsh-users/zsh-autosuggestions.git /root/.oh-my-zsh/plugins/zsh-autosuggestions && \
   git clone https://github.com/memark/zsh-dotnet-completion.git /root/.oh-my-zsh/plugins/zsh-dotnet-completion && \
   git clone https://github.com/zsh-users/zsh-autosuggestions /root/.oh-my-zsh/custom/plugins/zsh-autosuggestions && \
   echo "done"
