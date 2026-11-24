@@ -80,12 +80,12 @@ jobs:
           & $exe --help
 
           $template = Join-Path $scratch 'TemplateProject'
-          New-Item -ItemType Directory -Path $template | Out-Null
-          Set-Content -Path (Join-Path $template 'TemplateProject.cs') -Value 'class TemplateProject {}'
+          New-Item -ItemType Directory -Path (Join-Path $template 'src') | Out-Null
+          Set-Content -Path (Join-Path $template 'src/TemplateProject.cs') -Value 'class TemplateProject {}'
           $output = Join-Path $scratch 'output'
           & $exe new $template SmokeApp -o $output --git-name 'Init Stack CI' --git-email 'ci@example.com'
           $project = Join-Path $output 'SmokeApp'
-          if ((Get-Content -Raw (Join-Path $project 'SmokeApp.cs')).Trim() -cne 'class SmokeApp {}') {
+          if ((Get-Content -Raw (Join-Path $project 'src/SmokeApp.cs')).Trim() -cne 'class SmokeApp {}') {
             throw "The generated file was not renamed and updated."
           }
           git -C $project rev-parse --verify HEAD
