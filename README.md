@@ -7,19 +7,33 @@
 
 Streamline your project setup with intelligent templating. Init-Stack automates the creation of new software projects by cloning GitHub repository templates and intelligently renaming files and replacing identifiers throughout the source code to match your new project's name.
 
-Built with .NET 9.0 and designed for cross-platform development.
+Built with .NET 10 LTS.
 
-## 📥 Installation
+## Installation
 
-**Linux:**
-```bash
+**macOS and Linux**
+
+```sh
 curl -fsSL https://raw.githubusercontent.com/rolfwessels/init-stack/main/scripts/install.sh | sh
 ```
 
-**Windows (PowerShell):**
+The installer uses `curl` and `unzip` and installs to `~/.local/bin`. If that directory is missing from your PATH, add this to your shell profile:
+
+```sh
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+**Windows (PowerShell)**
+
 ```powershell
 irm https://raw.githubusercontent.com/rolfwessels/init-stack/main/scripts/install.ps1 | iex
 ```
+
+The installer uses `%LOCALAPPDATA%\Programs\init-stack` and adds it to your user PATH.
+
+Both installers select an x64 or ARM64 build, verify its SHA-256 checksum, and install the latest release. Rerun the same command to upgrade. Set `INSTALL_DIR` in your shell before running the installer to use a different directory.
+
+The binaries include the .NET runtime. Linux builds target glibc-based distributions. Install Git to use GitHub templates and create the default initial commit. For a manual install, extract the ZIP for your OS and architecture from the [latest release](https://github.com/rolfwessels/init-stack/releases/latest) and put the executable on your PATH.
 
 ## 🔍 Using the CLI
 
@@ -28,7 +42,7 @@ irm https://raw.githubusercontent.com/rolfwessels/init-stack/main/scripts/instal
 Create a new project from a template:
 
 ```bash
-.\init-stack new
+init-stack new
 ```
 
 ### Using a Local Template
@@ -36,13 +50,13 @@ Create a new project from a template:
 Use a local folder as a template:
 
 ```bash
-.\init-stack new c:\project\Template\MyprojectName
+init-stack new ./templates/MyProjectName
 ```
 
 ### Specify Output Name and Location
 
 ```bash
-.\init-stack new c:\project\Template\MyprojectName MyNewName -o c:\Project\
+init-stack new ./templates/MyProjectName MyNewName -o ./projects
 ```
 
 ### Using Template Names
@@ -50,7 +64,7 @@ Use a local folder as a template:
 If you know the template name:
 
 ```bash
-.\init-stack new template-dotnet-core-console-app NewConsoleApp -o .
+init-stack new template-dotnet-core-console-app NewConsoleApp -o .
 ```
 
 ### Available Templates
@@ -68,7 +82,7 @@ The default template collection includes:
 The new project initializes with git and creates an initial commit. Override the git user and email:
 
 ```bash
-.\init-stack new template-dotnet-core-console-app NewConsoleApp -o . --git-name "Your Name" --git-email "your.email@example.com"
+init-stack new template-dotnet-core-console-app NewConsoleApp -o . --git-name "Your Name" --git-email "your.email@example.com"
 ```
 
 
@@ -88,8 +102,8 @@ make test
 # Run the application
 make start
 
-# Build for production
-make publish
+# Build and package release binaries locally
+make package
 ```
 
 ### Docker Deployment
@@ -109,7 +123,7 @@ make deploy env=dev
 - **Docker**: Required for containerized development. [Installation guide](https://docs.docker.com/get-docker/)
 - **Git**: For version control. [Download Git](https://git-scm.com/downloads)
 - **Make**: Command runner (available via WSL on Windows)
-- **.NET 9.0 SDK**: For local development outside containers 
+- **.NET 10 SDK**: For local development outside containers
 
 ## 📋 Available Make Commands
 
@@ -124,8 +138,8 @@ make deploy env=dev
 - `make version`: Display current version number
 - `make start`: Run Init Stack
 - `make test`: Run tests with coverage
-- `make publish`: Build production artifacts
-- `make package`: Package binaries into ZIP files (includes checksums)
+- `make publish`: Build self-contained executables for all six release targets
+- `make package`: Build ZIPs and SHA-256 checksums in `dist/release`. Use `make package RIDS=linux-x64` to build one target.
 - `make docker-login`: Authenticate with Docker registry
 - `make docker-build`: Build Docker image
 - `make docker-push`: Push Docker image to registry
@@ -190,22 +204,17 @@ This project uses a modified [Git Flow](https://nvie.com/posts/a-successful-git-
 
 - Production-ready code
 - Feature branches merge here when complete
-- CI/CD pipeline deploys to development environments
+- GitHub Actions publishes a new versioned release after all six packages pass their smoke tests
 
 **Releases**
 
-- Use **tags** instead of release branches
-- Process:
-  1. Ensure `main` branch is stable
-  2. Merge all desired changes
-  3. Create a version tag (e.g., `v1.2.0`)
-  4. Tagged commit is the official release
+- PRs produce downloadable ZIPs in their GitHub Actions run
+- After merging to `main`, CI publishes the tested archives and checksums and creates the version tag
+- If a release job fails, rerun the failed job from GitHub Actions
 
 **Hotfixes**
 
-- Create from specific `v1.xxx` tag
-- Merge back to `main`
-- Create new patch tag (e.g., `v1.2.1`)
+- Merge the fix to `main` to publish the next version
 
 ## ❓ FAQ
 
@@ -215,7 +224,7 @@ A: Yes, Init Stack runs on Linux, macOS, and Windows.
 
 **Q: How do I update to the latest version?**
 
-A: Pull the latest changes from the repository and rebuild your Docker container, or download the latest release from GitHub.
+A: Rerun your platform's [install command](#installation).
 
 **Q: What templates are available?**
 

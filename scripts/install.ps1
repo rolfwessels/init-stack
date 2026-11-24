@@ -2,37 +2,71 @@ $ErrorActionPreference = 'Stop'
 
 $Repo = 'rolfwessels/init-stack'
 $Bin = 'init-stack'
-$InstallDir = Join-Path $env:LOCALAPPDATA 'Programs\init-stack'
+$Releases = "https://github.com/$Repo/releases"
+$InstallDir = if ($env:INSTALL_DIR) { $env:INSTALL_DIR } else { Join-Path $env:LOCALAPPDATA 'Programs\init-stack' }
+$InstallDir = [IO.Path]::GetFullPath($InstallDir)
 
-$arch = if ($env:PROCESSOR_ARCHITEW6432) { $env:PROCESSOR_ARCHITEW6432 } else { $env:PROCESSOR_ARCHITECTURE }
-if ($arch -ne 'AMD64') {
-    throw "Only windows-x64 is supported; detected: $arch"
+$HostArch = if ($env:PROCESSOR_ARCHITEW6432) { $env:PROCESSOR_ARCHITEW6432 } else { $env:PROCESSOR_ARCHITECTURE }
+$Arch = switch ($HostArch) {
+    'AMD64' { 'x64' }
+    'ARM64' { 'arm64' }
+    default { throw "Unsupported CPU: $HostArch. See $Releases/latest." }
 }
 
-$Archive = "$Bin-win-x64.zip"
-$Url = "https://github.com/$Repo/releases/latest/download/$Archive"
+$Tag = (Invoke-RestMethod -Uri "https://api.github.com/repos/$Repo/releases/latest" -UseBasicParsing).tag_name
+if ($Tag -notmatch '^v\d+(\.\d+)+$') {
+    throw "Could not resolve the latest release. See $Releases/latest."
+}
 
-$Tmp = New-Item -ItemType Directory -Path (Join-Path $env:TEMP "init-stack-install-$(Get-Random)")
+$Archive = "$Bin-win-$Arch.zip"
+$Download = "$Releases/download/$Tag"
+$Tmp = Join-Path $InstallDir ".init-stack-install-$([guid]::NewGuid())"
+[IO.Directory]::CreateDirectory($Tmp) | Out-Null
 try {
-    Write-Host "Downloading $Archive..."
-    Invoke-WebRequest -Uri $Url -OutFile (Join-Path $Tmp $Archive) -UseBasicParsing
+    $ArchivePath = Join-Path $Tmp $Archive
+    $Checksums = Join-Path $Tmp 'checksums.txt'
+    Write-Host "Downloading $Archive from $Tag..."
+    try {
+        Invoke-WebRequest -Uri "$Download/$Archive" -OutFile $ArchivePath -UseBasicParsing
+    } catch {
+        throw "Could not download $Archive from $Tag. See $Releases/latest. $($_.Exception.Message)"
+    }
+    Invoke-WebRequest -Uri "$Download/checksums.txt" -OutFile $Checksums -UseBasicParsing
 
-    Write-Host "Extracting to $InstallDir..."
-    New-Item -ItemType Directory -Force -Path $InstallDir | Out-Null
-    Expand-Archive -Path (Join-Path $Tmp $Archive) -DestinationPath $InstallDir -Force
+    $Pattern = '^([0-9a-f]{64}) [ *]' + [regex]::Escape($Archive) + '$'
+    $Expected = @(Get-Content -LiteralPath $Checksums | ForEach-Object {
+        if ($_ -match $Pattern) { $Matches[1] }
+    })
+    $Actual = (Get-FileHash -LiteralPath $ArchivePath -Algorithm SHA256).Hash
+    if ($Expected.Count -ne 1 -or $Expected[0] -ne $Actual) {
+        throw "SHA-256 verification failed for $Archive."
+    }
 
-    $exe = Join-Path $InstallDir "$Bin.exe"
-    Write-Host "Installed: $exe"
-    & $exe --version
+    Expand-Archive -LiteralPath $ArchivePath -DestinationPath $Tmp
+    $StagedExe = Join-Path $Tmp "$Bin.exe"
+    $Version = & $StagedExe --version
+    if ($LASTEXITCODE -ne 0) {
+        throw "The downloaded executable exited with code $LASTEXITCODE."
+    }
+
+    $Exe = Join-Path $InstallDir "$Bin.exe"
+    if ([IO.File]::Exists($Exe)) {
+        [IO.File]::Replace($StagedExe, $Exe, (Join-Path $Tmp 'previous.exe'))
+    } else {
+        [IO.File]::Move($StagedExe, $Exe)
+    }
+    Write-Host "Installed init-stack $Version at $Exe"
 
     $userPath = [Environment]::GetEnvironmentVariable('Path', 'User')
     if (-not ($userPath -split ';' -contains $InstallDir)) {
         Write-Host "Adding $InstallDir to user PATH..."
         $newPath = if ($userPath) { "$userPath;$InstallDir" } else { $InstallDir }
         [Environment]::SetEnvironmentVariable('Path', $newPath, 'User')
-        $env:Path = "$env:Path;$InstallDir"
         Write-Host "Restart your terminal for PATH changes to apply to new shells."
     }
+    if (-not ($env:Path -split ';' -contains $InstallDir)) {
+        $env:Path = "$env:Path;$InstallDir"
+    }
 } finally {
-    Remove-Item -Recurse -Force $Tmp -ErrorAction SilentlyContinue
+    Remove-Item -Recurse -Force -LiteralPath $Tmp -ErrorAction SilentlyContinue
 }
