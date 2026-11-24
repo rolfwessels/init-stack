@@ -16,6 +16,8 @@ version-suffix := ''
 dockerhub := dockerhub.com/init-stack
 
 release := release
+RIDS ?= linux-x64 linux-arm64 osx-x64 osx-arm64 win-x64 win-arm64
+CLI_PROJECT := src/InitStack.Cmd/InitStack.Cmd.csproj
 ifeq ($(env), dev)
 	release := debug
 	version-suffix:= ""
@@ -96,10 +98,10 @@ build: down
 	@docker compose build
 
 version:
-	@echo -e "Setting version number ${GREEN}v${version}${NC} "
-	@echo '{ "version": "v${version}" }' > src/version.json
-	@echo "v${version}" > dist/version.txt
+	@echo "v$(version-full)"
 
+print-version:
+	@echo "$(version-full)"
 
 start: 
 	@echo -e "Starting the $(release) release of $(project)"
@@ -114,39 +116,21 @@ test:
 		 /p:Exclude="[*.Tests]*" \
 		 /p:CoverletOutputFormat="lcov"
 
-publish: 
-	@echo -e "Building the ${GREEN}v${version}${NC}-$(release) release of $(project)"
-		
-	@dotnet publish src/InitStack.Cmd/InitStack.Cmd.csproj -r linux-x64 -c $(release) \
-		-p:DebugType=None \
-		-p:DebugSymbols=false \
-		-p:PublishSingleFile=true \
-		-p:PublishTrimmed=false  \
-		-p:SelfContained=false \
-		-p:VersionSuffix=$(version-suffix) \
-		-p:FileVersion=$(version) \
-		-p:VersionPrefix=$(version) \
-	--output ./dist/$(release)/linux-x64 
-	@dotnet publish src/InitStack.Cmd/InitStack.Cmd.csproj -r win-x64 -c $(release) \
-		-p:DebugType=None \
-		-p:DebugSymbols=false \
-		-p:PublishSingleFile=true \
-		-p:PublishTrimmed=false  \
-		-p:SelfContained=false \
-		-p:VersionSuffix=$(version-suffix) \
-		-p:FileVersion=$(version) \
-		-p:VersionPrefix=$(version) \
-		--output ./dist/$(release)/win-x64 
+publish:
+	@set -eu; for rid in $(RIDS); do \
+		dotnet publish $(CLI_PROJECT) -r "$$rid" -c $(release) \
+			-p:PublishProfile=ReleaseBinary -p:Version="$(version-full)" \
+			--output "./dist/$(release)/$$rid"; \
+	done
 
 package: publish
-	@echo -e "Packaging ${GREEN}v${version}${NC} binaries"
-	@mkdir -p dist/$(release)
-	@echo "v${version}" > dist/version.txt
-	@cd dist/$(release)/linux-x64 && zip -r ../init-stack-linux-x64.zip .
-	@cd dist/$(release)/win-x64 && zip -r ../init-stack-win-x64.zip .
-	@cd dist/$(release) && sha256sum init-stack-*.zip > checksums.txt
-	@echo -e "Packages created in ${GREEN}dist/$(release)/${NC}"
-	@ls -lh dist/$(release)/*.zip
+	@set -eu; cd dist/$(release); \
+	for rid in $(RIDS); do \
+		binary=init-stack; \
+		case "$$rid" in win-*) binary=init-stack.exe ;; esac; \
+		(cd "$$rid" && zip -q - "$$binary") > "init-stack-$$rid.zip"; \
+	done; \
+	for rid in $(RIDS); do sha256sum "init-stack-$$rid.zip" || exit; done > checksums.txt
 
 
 docker-login: 

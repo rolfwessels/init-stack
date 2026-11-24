@@ -19,7 +19,8 @@ internal class Program
     var app = new CommandApp();
     Console.OutputEncoding = Encoding.UTF8;
 
-    var version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "dev";
+    var version = Assembly.GetExecutingAssembly()
+      .GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "dev";
     app.Configure(config =>
     {
       config.SetApplicationName("Init-Stack");
