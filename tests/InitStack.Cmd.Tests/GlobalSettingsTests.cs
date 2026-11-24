@@ -17,7 +17,8 @@ public class GlobalSettingsTests
       "https://github.com/rolfwessels/template-dotnet-core-graphql-app.git",
       "https://github.com/rolfwessels/template-go-agent.git",
       "https://github.com/rolfwessels/template-go-console-app.git",
-      "https://github.com/rolfwessels/template-react-spa-site.git"
+      "https://github.com/rolfwessels/template-react-spa-site.git",
+      "https://github.com/rolfwessels/template-rust-web-app.git"
     });
   }
 }

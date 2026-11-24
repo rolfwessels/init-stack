@@ -76,6 +76,10 @@ The default template collection includes:
 - [template-go-agent](https://github.com/rolfwessels/template-go-agent) — Go AI agent
 - [template-go-console-app](https://github.com/rolfwessels/template-go-console-app) — Go console application
 - [template-react-spa-site](https://github.com/rolfwessels/template-react-spa-site) — React single-page application
+- [template-rust-web-app](https://github.com/rolfwessels/template-rust-web-app) — Rust and React web app with GraphQL
+
+Generate a Rust web app with `init-stack new template-rust-web-app SampleMovieApp -o .`.
+From a workspace with a local template checkout, use `init-stack new ./template-rust-web-app SampleMovieApp -o .`.
 
 ### Custom Git Configuration
 
