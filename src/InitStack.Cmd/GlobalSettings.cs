@@ -31,7 +31,8 @@ public class GlobalSettings(IConfiguration configuration) : BaseSettings(configu
       "https://github.com/rolfwessels/template-dotnet-core-console-app.git",
       "https://github.com/rolfwessels/template-react-spa-site.git",
       "https://github.com/rolfwessels/template-go-console-app.git",
-      "https://github.com/rolfwessels/template-go-agent.git"
+      "https://github.com/rolfwessels/template-go-agent.git",
+      "https://github.com/rolfwessels/template-rust-web-app.git"
     });
 
   public string[] CommitMessages => ReadConfigValue("CommitMessages",
@@ -59,6 +60,9 @@ public class GlobalSettings(IConfiguration configuration) : BaseSettings(configu
     Path.DirectorySeparatorChar + "_UpgradeReport_Files",
     Path.DirectorySeparatorChar + "Backup",
     Path.DirectorySeparatorChar + "node_modules",
+    Path.DirectorySeparatorChar + ".pnpm-store",
+    Path.DirectorySeparatorChar + "target",
+    Path.DirectorySeparatorChar + "dist",
     ".cache",
     ".user",
     ".suo",
@@ -80,9 +84,15 @@ public class GlobalSettings(IConfiguration configuration) : BaseSettings(configu
     @".js",
     @".go",
     @".mod",
+    @".rs",
+    @".toml",
+    @"Cargo.lock",
+    @".ts",
+    @".tsx",
     @"Makefile",
     @"Dockerfile",
     @".yml",
+    @".yaml",
     @".md",
     @".sh",
     @".html",

@@ -20,7 +20,7 @@ public class ReplaceItAll
       solutionName = solutionName.Replace("_", " ").Replace("-", " ").Pascalize();
     var solutionNameSplit = SplitCamelCase(solutionName);
 
-    var newSolutionNameSplit = SplitCamelCase(newSolutionName).Replace(".", "");
+    var newSolutionNameSplit = Regex.Replace(SplitCamelCase(newSolutionName).Replace(".", ""), @"[\s_-]+", " ").Trim();
     var simpleOnes = new[]
       {
         new StringReplacements("__NAME__", newSolutionName),
